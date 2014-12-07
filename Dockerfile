@@ -8,10 +8,17 @@ RUN apt-get update
 RUN apt-get install debconf-utils
 RUN echo zabbix-server-mysql zabbix-server-mysql/dbconfig-install false | debconf-set-selections
 
+RUN groupadd zabbix
+RUN useradd -g zabbix zabbix
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends zabbix-server-mysql
 
-# Add server config and restart the server
+# Add server config
 ADD zabbix_server.conf /etc/zabbix/zabbix_server.conf
+
+# For some reason, the install above does not create the run dir
+RUN mkdir -p /var/run/zabbix
+RUN chown -R zabbix:zabbix /var/run/zabbix
 
 # Expose Zabbix services ports
 EXPOSE 10051 10052

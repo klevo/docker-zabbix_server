@@ -3,7 +3,12 @@
 Requirement: running mysql container that exposes port 3306.
 
 ```
-docker run -d --name zabbix_server --link mysql:mysql klevo/zabbix_server
+docker run -d --name zabbix_server \
+  --link mysql:mysql \
+  -e ZABBIX_DB_NAME=zabbix \
+  -e ZABBIX_DB_USER=root \
+  -e ZABBIX_DB_PASSWORD=mypass \
+  klevo/zabbix_server
 ```
 
 To inspect the running mysql container:

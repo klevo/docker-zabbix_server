@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo " -> Removing docker images"
+docker rm -f zabbix_server
+
+echo " -> Rebuilding the image from current directory"
+docker build -t klevo/zabbix_server .
+
+echo " -> Run the new container"
+docker run -d --name zabbix_server \
+  --link mysql:mysql \
+  -e ZABBIX_DB_NAME=zabbix \
+  -e ZABBIX_DB_USER=root \
+  -e ZABBIX_DB_PASSWORD=mypass \
+  klevo/zabbix_server
+
+echo " -> Done."
+docker ps
+
+echo " -> To inspect the running db container: docker exec -i -t zabbix_server /bin/bash"
