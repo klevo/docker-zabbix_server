@@ -11,7 +11,7 @@ sed -i "s/ZABBIX_DB_PASSWORD/$ZABBIX_DB_PASSWORD/" /etc/zabbix/zabbix_server.con
 set -eu
 
 pidfile="/var/run/zabbix/zabbix_server.pid"
-command=zabbix_server
+command=/opt/zabbix/sbin/zabbix_server -c /etc/zabbix/zabbix_server.conf
 
 # Proxy signals
 function kill_app(){

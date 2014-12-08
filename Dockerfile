@@ -1,31 +1,33 @@
 FROM dockerfile/ubuntu
 
-# TODO: this image can be flattened to save on aufs layers: http://3ofcoins.net/2013/09/22/flat-docker-images/
 # TODO: http://serverfault.com/questions/440285/why-does-snmp-fail-to-use-its-own-mibs
 #       apt-get install snmp snmp-mibs-downloader
 # TODO: http://stackoverflow.com/questions/26215021/configure-sendmail-inside-a-docker-container
-# TODO: install from source
 # TODO: add frontend with php-fpm and nginx
 
-# https://www.zabbix.com/documentation/2.4/manual/installation/install_from_packages
-RUN wget http://repo.zabbix.com/zabbix/2.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_2.4-1+trusty_all.deb
-RUN dpkg -i zabbix-release_2.4-1+trusty_all.deb
-RUN apt-get update
-
-RUN apt-get install debconf-utils
-RUN echo zabbix-server-mysql zabbix-server-mysql/dbconfig-install false | debconf-set-selections
-
-RUN groupadd zabbix
-RUN useradd -g zabbix zabbix
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends zabbix-server-mysql
+RUN wget -O zabbix-2.4.2.tar.gz http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/2.4.2/zabbix-2.4.2.tar.gz/download && \
+  apt-get update && \
+  
+  # zabbix dependencies
+  apt-get install -y build-essential adduser fping libc6 libcurl3-gnutls libiksemel3 libldap-2.4-2 libmysqlclient18 libmysqlclient-dev libodbc1 libopenipmi0 libsnmp30 libssh2-1 libxml2 lsb-base sysv-rc ucf net-snmp-config libcurl3-dev && \
+    
+  # compilation
+  tar -zxvf zabbix-2.4.2.tar.gz && \
+  cd zabbix-2.4.2 && \
+  ./configure --prefix=/opt/zabbix --enable-server --with-mysql --enable-ipv6 --with-libcurl --with-libxml2 && \
+  make install && \
+    
+  groupadd zabbix && \
+  useradd -g zabbix zabbix && \
+  mkdir -p /var/run/zabbix && \
+  chown -R zabbix:zabbix /var/run/zabbix && \
+  mkdir -p /var/log/zabbix && \
+  chown -R zabbix:zabbix /var/log/zabbix
+  
+# server can now be run: /opt/zabbix/sbin/zabbix_server
 
 # Add server config
 ADD zabbix_server.conf /etc/zabbix/zabbix_server.conf
-
-# For some reason, the install above does not create the run dir
-RUN mkdir -p /var/run/zabbix
-RUN chown -R zabbix:zabbix /var/run/zabbix
 
 # Expose Zabbix services ports
 EXPOSE 10051 10052
