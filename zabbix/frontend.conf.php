@@ -3,7 +3,7 @@
 global $DB;
 
 $DB['TYPE']     = 'MYSQL';
-$DB['SERVER']   = 'MYSQL_PORT_3306_TCP_ADDR';
+$DB['SERVER']   = 'mysql';
 $DB['PORT']     = '3306';
 $DB['DATABASE'] = 'ZABBIX_DB_NAME';
 $DB['USER']     = 'ZABBIX_DB_USER';
