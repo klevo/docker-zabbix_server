@@ -8,6 +8,7 @@ docker run -d --name zabbix_server \
   -e ZABBIX_DB_NAME=zabbix \
   -e ZABBIX_DB_USER=root \
   -e ZABBIX_DB_PASSWORD=mypass \
+  -e ZABBIX_DOMAIN=zabbix.mydomain.com \
   klevo/zabbix_server
 ```
 
