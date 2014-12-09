@@ -31,7 +31,7 @@ RUN groupadd zabbix && \
   chown -R zabbix:zabbix /var/log/zabbix && \
     
   # deploy the frontend files
-  mv /zabbix-2.4.2/frontends/php /srv/zabbix && \
+  mv /root/zabbix-2.4.2/frontends/php /srv/zabbix && \
   chown -R www-data:www-data /srv/zabbix
   
 # server can now be run: /opt/zabbix/sbin/zabbix_server
