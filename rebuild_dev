@@ -6,6 +6,9 @@ docker rm -f zabbix_server
 echo " -> Rebuilding the image from current directory"
 docker build -t klevo/zabbix_server .
 
+echo " -> Ensuring mysql container is running"
+docker start mysql
+
 echo " -> Run the new container"
 docker run -d --name zabbix_server \
   --link mysql:mysql \
