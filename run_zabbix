@@ -1,8 +1,11 @@
 #!/bin/bash
+set -eu
 
 # Start supporting services
 service nginx start
 service php5-fpm start
+
+echo "MYSQL_PORT_3306_TCP_ADDR: $MYSQL_PORT_3306_TCP_ADDR"
 
 # Adjust zabbix server config
 sed -i "s/MYSQL_PORT_3306_TCP_ADDR/$MYSQL_PORT_3306_TCP_ADDR/" /etc/zabbix/zabbix_server.conf
@@ -18,7 +21,6 @@ sed -i "s/ZABBIX_DB_PASSWORD/$ZABBIX_DB_PASSWORD/" /srv/zabbix/conf/zabbix.conf.
 
 # Since zabbix_server can not (yet) run in the foreground, we need to hack around it:
 # http://serverfault.com/questions/608069/managing-daemons-with-supervisor-no-foreground-mode-available
-set -eu
 
 pidfile="/var/run/zabbix/zabbix_server.pid"
 
@@ -39,3 +41,6 @@ sleep 2
 while [ -f $pidfile ] && kill -0 $(cat $pidfile) ; do
   sleep 1
 done
+
+tail -n100 /var/log/zabbix/zabbix_server.log
+exit 1
