@@ -8,7 +8,7 @@ FROM dockerfile/ubuntu
 RUN apt-get update && \
   
   # zabbix dependencies
-  apt-get install -y build-essential adduser fping libc6 libcurl3-gnutls libiksemel3 libldap-2.4-2 libmysqlclient18 libmysqlclient-dev libodbc1 libopenipmi0 libsnmp30 libssh2-1 libxml2 lsb-base sysv-rc ucf net-snmp-config libcurl3-dev \
+  apt-get install -y build-essential adduser fping libc6 libcurl3-gnutls libiksemel3 libldap-2.4-2 libmysqlclient18 libmysqlclient-dev libodbc1 libopenipmi0 libsnmp30 libssh2-1 libxml2 lsb-base sysv-rc ucf libcurl3-dev libxml2-dev \
     
   # php-fpm & nginx
   php5-mysql php5-fpm php5-gd nginx
@@ -20,10 +20,10 @@ RUN wget -O zabbix-2.4.2.tar.gz http://sourceforge.net/projects/zabbix/files/ZAB
   tar -zxvf zabbix-2.4.2.tar.gz && \
   cd zabbix-2.4.2 && \
   ./configure --prefix=/opt/zabbix --enable-server --with-mysql --enable-ipv6 --with-libcurl --with-libxml2 && \
-  make install && \
+  make install
   
   # set up zabbix user and required dirs  
-  groupadd zabbix && \
+RUN groupadd zabbix && \
   useradd -g zabbix zabbix && \
   mkdir -p /var/run/zabbix && \
   chown -R zabbix:zabbix /var/run/zabbix && \
@@ -31,7 +31,7 @@ RUN wget -O zabbix-2.4.2.tar.gz http://sourceforge.net/projects/zabbix/files/ZAB
   chown -R zabbix:zabbix /var/log/zabbix && \
     
   # deploy the frontend files
-  mv zabbix-2.4.2/frontends/php /srv/zabbix && \
+  mv /zabbix-2.4.2/frontends/php /srv/zabbix && \
   chown -R www-data:www-data /srv/zabbix
   
 # server can now be run: /opt/zabbix/sbin/zabbix_server
