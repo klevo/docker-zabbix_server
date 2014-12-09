@@ -40,6 +40,7 @@ RUN groupadd zabbix && \
 ADD zabbix/zabbix_server.conf /etc/zabbix/zabbix_server.conf
 ADD php-fpm/www.conf /etc/php5/fpm/php-fpm.conf
 ADD nginx/zabbix.conf /etc/nginx/sites-available/default
+ADD zabbix/frontend.conf.php /srv/zabbix/conf/zabbix.conf.php
 
 # Expose Zabbix services ports & nginx
 EXPOSE 10051 10052 80
