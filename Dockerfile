@@ -41,8 +41,8 @@ ADD zabbix/zabbix_server.conf /etc/zabbix/zabbix_server.conf
 ADD php-fpm/www.conf /etc/php5/fpm/php-fpm.conf
 ADD nginx/zabbix.conf /etc/nginx/sites-available/default
 
-# Expose Zabbix services ports
-EXPOSE 10051 10052
+# Expose Zabbix services ports & nginx
+EXPOSE 10051 10052 80
 
 VOLUME ["/usr/lib/zabbix/alertscripts", "/usr/lib/zabbix/externalscripts"]
 
