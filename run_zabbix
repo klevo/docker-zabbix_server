@@ -8,16 +8,16 @@ service php5-fpm start
 echo "MYSQL_PORT_3306_TCP_ADDR: $MYSQL_PORT_3306_TCP_ADDR"
 
 # Adjust zabbix server config
-sed -i "s/MYSQL_PORT_3306_TCP_ADDR/$MYSQL_PORT_3306_TCP_ADDR/" /etc/zabbix/zabbix_server.conf
-sed -i "s/ZABBIX_DB_NAME/$ZABBIX_DB_NAME/" /etc/zabbix/zabbix_server.conf
-sed -i "s/ZABBIX_DB_USER/$ZABBIX_DB_USER/" /etc/zabbix/zabbix_server.conf
-sed -i "s/ZABBIX_DB_PASSWORD/$ZABBIX_DB_PASSWORD/" /etc/zabbix/zabbix_server.conf
+sed -i "s/^\(DBHost=\).*/\1$MYSQL_PORT_3306_TCP_ADDR/" /etc/zabbix/zabbix_server.conf
+sed -i "s/^\(DBName=\).*/\1$ZABBIX_DB_NAME/" /etc/zabbix/zabbix_server.conf
+sed -i "s/^\(DBUser=\).*/\1$ZABBIX_DB_USER/" /etc/zabbix/zabbix_server.conf
+sed -i "s/^\(DBPassword=\).*/\1$ZABBIX_DB_PASSWORD/" /etc/zabbix/zabbix_server.conf
 
-# Adjust zabbix frontend config
-sed -i "s/MYSQL_PORT_3306_TCP_ADDR/$MYSQL_PORT_3306_TCP_ADDR/" /srv/zabbix/conf/zabbix.conf.php
-sed -i "s/ZABBIX_DB_NAME/$ZABBIX_DB_NAME/" /srv/zabbix/conf/zabbix.conf.php
-sed -i "s/ZABBIX_DB_USER/$ZABBIX_DB_USER/" /srv/zabbix/conf/zabbix.conf.php
-sed -i "s/ZABBIX_DB_PASSWORD/$ZABBIX_DB_PASSWORD/" /srv/zabbix/conf/zabbix.conf.php
+# frontend config too
+sed -i "s/^\(\$DB\['SERVER'\]\).*/\1 = '$MYSQL_PORT_3306_TCP_ADDR';/" /srv/zabbix/conf/zabbix.conf.php
+sed -i "s/^\(\$DB\['DATABASE'\]\).*/\1 = '$ZABBIX_DB_NAME';/" /srv/zabbix/conf/zabbix.conf.php
+sed -i "s/^\(\$DB\['USER'\]\).*/\1 = '$ZABBIX_DB_USER';/" /srv/zabbix/conf/zabbix.conf.php
+sed -i "s/^\(\$DB\['PASSWORD'\]\).*/\1 = '$ZABBIX_DB_PASSWORD';/" /srv/zabbix/conf/zabbix.conf.php
 
 # Since zabbix_server can not (yet) run in the foreground, we need to hack around it:
 # http://serverfault.com/questions/608069/managing-daemons-with-supervisor-no-foreground-mode-available
