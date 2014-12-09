@@ -15,7 +15,6 @@ sed -i "s/ZABBIX_DB_PASSWORD/$ZABBIX_DB_PASSWORD/" /etc/zabbix/zabbix_server.con
 set -eu
 
 pidfile="/var/run/zabbix/zabbix_server.pid"
-command=/opt/zabbix/sbin/zabbix_server -c /etc/zabbix/zabbix_server.conf
 
 # Proxy signals
 function kill_app(){
@@ -25,8 +24,8 @@ function kill_app(){
 }
 trap "kill_app" SIGINT SIGTERM
 
-# Launch daemon
-$command
+# Launch zabbix daemon
+/opt/zabbix/sbin/zabbix_server -c /etc/zabbix/zabbix_server.conf
 echo "zabbix_server started"
 sleep 2
 
