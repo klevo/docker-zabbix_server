@@ -1,6 +1,6 @@
 # Zabbix Server Dockerfile
 
-Requirement: running mysql container that exposes port 3306.
+Requirement: running mysql container that exposes port 3306. The following example assumes a database exists on the mysql server as specified by the env variables in the command:
 
 ```
 docker run -d --name zabbix_server \
@@ -12,8 +12,11 @@ docker run -d --name zabbix_server \
   klevo/zabbix_server
 ```
 
-To inspect the running mysql container:
+To inspect the running container:
 
 ```
-docker exec -i -t mysql /bin/bash
+docker exec -i -t zabbix_server /bin/bash
 ```
+
+### Web frontend included
+
