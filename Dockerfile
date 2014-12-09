@@ -22,12 +22,21 @@ RUN wget -O zabbix-2.4.2.tar.gz http://sourceforge.net/projects/zabbix/files/ZAB
   mkdir -p /var/run/zabbix && \
   chown -R zabbix:zabbix /var/run/zabbix && \
   mkdir -p /var/log/zabbix && \
-  chown -R zabbix:zabbix /var/log/zabbix
+  chown -R zabbix:zabbix /var/log/zabbix && \
+    
+  # prepare the frontend files
+  mv zabbix-2.4.2/frontends/php /srv/zabbix && \
+  chown -R www-data:www-data /srv/zabbix
+    
+  # php-fpm & nginx
+  apt-get install -y php5-mysql php5-fpm php5-gd nginx
   
 # server can now be run: /opt/zabbix/sbin/zabbix_server
 
 # Add server config
-ADD zabbix_server.conf /etc/zabbix/zabbix_server.conf
+ADD zabbix/zabbix_server.conf /etc/zabbix/zabbix_server.conf
+ADD php-fpm/www.conf /etc/php5/fpm/php-fpm.conf
+ADD nginx/zabbix.conf /etc/nginx/sites-available/default
 
 # Expose Zabbix services ports
 EXPOSE 10051 10052

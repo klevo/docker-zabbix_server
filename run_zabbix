@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# Set up the config
+# Start supporting services
+service nginx start
+service php5-fpm start
+
+# Adjust zabbix server config
 sed -i "s/MYSQL_PORT_3306_TCP_ADDR/$MYSQL_PORT_3306_TCP_ADDR/" /etc/zabbix/zabbix_server.conf
 sed -i "s/ZABBIX_DB_NAME/$ZABBIX_DB_NAME/" /etc/zabbix/zabbix_server.conf
 sed -i "s/ZABBIX_DB_USER/$ZABBIX_DB_USER/" /etc/zabbix/zabbix_server.conf
@@ -26,7 +30,7 @@ $command
 echo "zabbix_server started"
 sleep 2
 
-# Loop while the pidfile and the process exist
+# Loop while the zabbix pidfile and the process exist
 while [ -f $pidfile ] && kill -0 $(cat $pidfile) ; do
     sleep 1
 done
