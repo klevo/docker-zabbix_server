@@ -42,11 +42,11 @@ ADD php-fpm/www.conf /etc/php5/fpm/php-fpm.conf
 ADD nginx/zabbix.conf /etc/nginx/sites-available/default
 ADD zabbix/frontend.conf.php /srv/zabbix/conf/zabbix.conf.php
 
-# install postfix for relaying emails from zabbix
-RUN apt-get install -y libsasl2-modules postfix
-ADD postfix/main.cf /etc/postfix/main.cf
-ADD scripts/init_postfix /init_postfix
-ADD postfix/mailname /etc/mailname
+# install nullmailer for relaying emails from zabbix
+# http://opensourcehacker.com/2013/03/25/using-nullmailer-and-mandrill-for-your-ubuntu-linux-server-outboud-mail/
+RUN apt-get install -y nullmailer
+ADD nullmailer/remotes /etc/nullmailer/remotes
+ADD scripts/init_nullmailer /init_nullmailer
 
 # Expose Zabbix services ports & nginx
 EXPOSE 10051 10052 80

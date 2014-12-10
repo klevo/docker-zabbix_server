@@ -1,6 +1,6 @@
 #!/bin/bash
 set -eu
 
-service postfix restart
+service nullmailer start
 
 exit 0

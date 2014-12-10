@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-/init_postfix
+/init_nullmailer
 
 # Start supporting services
 service nginx start
