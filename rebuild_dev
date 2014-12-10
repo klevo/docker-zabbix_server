@@ -6,12 +6,13 @@ docker rm -f zabbix_server
 echo " -> Rebuilding the image from current directory"
 docker build -t klevo/zabbix_server .
 
-echo " -> Ensuring mysql container is running"
-docker start mysql
+echo " -> Ensure linked containers are running"
+docker start mysql postfix_mandrill
 
 echo " -> Run the new container"
 docker run -d --name zabbix_server \
   --link mysql:mysql \
+  --link postfix_mandrill:postfix_relay \
   -e ZABBIX_DB_NAME=zabbix \
   -e ZABBIX_DB_USER=root \
   -e ZABBIX_DB_PASSWORD=mypass \
@@ -21,4 +22,4 @@ docker run -d --name zabbix_server \
 echo " -> Done."
 docker ps
 
-echo " -> To inspect the running db container: docker exec -i -t zabbix_server /bin/bash"
+docker exec -i -t zabbix_server /bin/bash

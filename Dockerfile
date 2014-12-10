@@ -42,10 +42,16 @@ ADD php-fpm/www.conf /etc/php5/fpm/php-fpm.conf
 ADD nginx/zabbix.conf /etc/nginx/sites-available/default
 ADD zabbix/frontend.conf.php /srv/zabbix/conf/zabbix.conf.php
 
+# install postfix for relaying emails from zabbix
+RUN apt-get install -y libsasl2-modules postfix
+ADD postfix/main.cf /etc/postfix/main.cf
+ADD scripts/init_postfix /init_postfix
+ADD postfix/mailname /etc/mailname
+
 # Expose Zabbix services ports & nginx
 EXPOSE 10051 10052 80
 
 VOLUME ["/usr/lib/zabbix/alertscripts", "/usr/lib/zabbix/externalscripts"]
 
-ADD run_zabbix /run_zabbix
+ADD scripts/run_zabbix /run_zabbix
 CMD ["/run_zabbix"]
