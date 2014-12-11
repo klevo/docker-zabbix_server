@@ -1,6 +1,10 @@
 # Zabbix Server Dockerfile
 
-Requirement: running mysql container that exposes port 3306. The following example assumes a database exists on the mysql server as specified by the env variables in the command:
+### Requirements
+
+Requirement is a running mysql container that exposes port 3306 (https://github.com/dockerfile/percona for example). This mysql container needs to be linked as 'mysql' as zabbix container uses this hostname to connect. 
+
+### Example usage
 
 ```
 docker run -d --name zabbix_server \
@@ -20,3 +24,8 @@ docker exec -i -t zabbix_server /bin/bash
 
 ### Web frontend included
 
+This container exposes port 80 which serves the zabbix frontend served by nginx and php-fpm. I decided against splitting this responsibility into multiple containers as the frontend is closely related to the version of the server and build from the same source. So keeping separate containers, which might be updated/build independently would add unnecessary work.
+
+### Limitations
+
+There is no initialization of the zabbix database currently.
