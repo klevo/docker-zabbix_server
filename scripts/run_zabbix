@@ -14,10 +14,15 @@ sed -i "s/^\(DBName=\).*/\1$ZABBIX_DB_NAME/" /etc/zabbix/zabbix_server.conf
 sed -i "s/^\(DBUser=\).*/\1$ZABBIX_DB_USER/" /etc/zabbix/zabbix_server.conf
 sed -i "s/^\(DBPassword=\).*/\1$ZABBIX_DB_PASSWORD/" /etc/zabbix/zabbix_server.conf
 
-# frontend config too
+# frontend config
 sed -i "s/^\(\$DB\['DATABASE'\]\).*/\1 = '$ZABBIX_DB_NAME';/" /srv/zabbix/conf/zabbix.conf.php
 sed -i "s/^\(\$DB\['USER'\]\).*/\1 = '$ZABBIX_DB_USER';/" /srv/zabbix/conf/zabbix.conf.php
 sed -i "s/^\(\$DB\['PASSWORD'\]\).*/\1 = '$ZABBIX_DB_PASSWORD';/" /srv/zabbix/conf/zabbix.conf.php
+
+# agent config
+sed -i "s/^\(Hostname=\).*/\1$ZABBIX_AGENT_HOSTNAME/" /etc/zabbix/zabbix_agentd.conf
+# start the agent
+/opt/zabbix/sbin/zabbix_agentd -c /etc/zabbix/zabbix_agentd.conf
 
 # Since zabbix_server can not (yet) run in the foreground, we need to hack around it:
 # http://serverfault.com/questions/608069/managing-daemons-with-supervisor-no-foreground-mode-available

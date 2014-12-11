@@ -8,6 +8,9 @@ RUN apt-get update && \
     
   # php-fpm & nginx
   php5-mysql php5-fpm php5-gd nginx
+  
+  # nullmailer for relaying emails from zabbix
+  nullmailer
 
 # download zabbix source & compile it
 RUN wget -O zabbix-2.4.2.tar.gz http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/2.4.2/zabbix-2.4.2.tar.gz/download && \
@@ -15,32 +18,35 @@ RUN wget -O zabbix-2.4.2.tar.gz http://sourceforge.net/projects/zabbix/files/ZAB
   # compilation
   tar -zxvf zabbix-2.4.2.tar.gz && \
   cd zabbix-2.4.2 && \
-  ./configure --prefix=/opt/zabbix --enable-server --with-mysql --enable-ipv6 --with-libcurl --with-libxml2 && \
+  ./configure --prefix=/opt/zabbix --enable-server --enable-agent --with-mysql --enable-ipv6 --with-libcurl --with-libxml2 && \
   make install
   
-  # set up zabbix user and required dirs  
+# set up zabbix user and paths
 RUN groupadd zabbix && \
   useradd -g zabbix zabbix && \
   mkdir -p /var/run/zabbix && \
   chown -R zabbix:zabbix /var/run/zabbix && \
   mkdir -p /var/log/zabbix && \
   chown -R zabbix:zabbix /var/log/zabbix && \
+  mkdir -p /opt/zabbix/agent_include && \
+  chown -R zabbix:zabbix /opt/zabbix/agent_include && \
     
   # deploy the frontend files
   mv /root/zabbix-2.4.2/frontends/php /srv/zabbix && \
   chown -R www-data:www-data /srv/zabbix
   
-# server can now be run: /opt/zabbix/sbin/zabbix_server
-
-# Add server config
+# Zabbix server config
 ADD zabbix/zabbix_server.conf /etc/zabbix/zabbix_server.conf
 ADD php-fpm/www.conf /etc/php5/fpm/php-fpm.conf
 ADD nginx/zabbix.conf /etc/nginx/sites-available/default
 ADD zabbix/frontend.conf.php /srv/zabbix/conf/zabbix.conf.php
 
-# install nullmailer for relaying emails from zabbix
+# agent config
+ADD zabbix/zabbix_agentd.conf /etc/zabbix/zabbix_agentd.conf
+
+
+# configure nullmailer 
 # http://opensourcehacker.com/2013/03/25/using-nullmailer-and-mandrill-for-your-ubuntu-linux-server-outboud-mail/
-RUN apt-get install -y nullmailer
 ADD nullmailer/remotes /etc/nullmailer/remotes
 ADD scripts/init_nullmailer /init_nullmailer
 
