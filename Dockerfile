@@ -1,9 +1,5 @@
 FROM dockerfile/ubuntu
 
-# TODO: http://serverfault.com/questions/440285/why-does-snmp-fail-to-use-its-own-mibs
-#       apt-get install snmp snmp-mibs-downloader
-# TODO: http://stackoverflow.com/questions/26215021/configure-sendmail-inside-a-docker-container
-
 # install required packages
 RUN apt-get update && \
   
