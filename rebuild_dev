@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eu
 
 echo " -> Removing docker images"
 docker rm -f zabbix_server
@@ -16,7 +17,7 @@ docker run -d --name zabbix_server \
   -e ZABBIX_DB_NAME=zabbix \
   -e ZABBIX_DB_USER=root \
   -e ZABBIX_DB_PASSWORD=mypass \
-  -e ZABBIX_AGENT_HOSTNAME=$HOSTNAME \
+  -e ZABBIX_AGENT_HOSTNAME=stream \
   -p 8081:80 \
   klevo/zabbix_server
 

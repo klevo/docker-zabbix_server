@@ -7,7 +7,7 @@ RUN apt-get update && \
   apt-get install -y build-essential adduser fping libc6 libcurl3-gnutls libiksemel3 libldap-2.4-2 libmysqlclient18 libmysqlclient-dev libodbc1 libopenipmi0 libsnmp30 libssh2-1 libxml2 lsb-base sysv-rc ucf libcurl3-dev libxml2-dev \
     
   # php-fpm & nginx
-  php5-mysql php5-fpm php5-gd nginx
+  php5-mysql php5-fpm php5-gd nginx \
   
   # nullmailer for relaying emails from zabbix
   nullmailer
@@ -43,7 +43,6 @@ ADD zabbix/frontend.conf.php /srv/zabbix/conf/zabbix.conf.php
 
 # agent config
 ADD zabbix/zabbix_agentd.conf /etc/zabbix/zabbix_agentd.conf
-
 
 # configure nullmailer 
 # http://opensourcehacker.com/2013/03/25/using-nullmailer-and-mandrill-for-your-ubuntu-linux-server-outboud-mail/
