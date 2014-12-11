@@ -30,6 +30,10 @@ docker exec -i -t zabbix_server /bin/bash
 
 This container exposes port 80 which serves the zabbix frontend served by nginx and php-fpm. I decided against splitting this responsibility into multiple containers as the frontend is closely related to the version of the server and build from the same source. So keeping separate containers, which might be updated/build independently would add unnecessary work.
 
+### Zabbix Agent included
+
+After testing various other configuration - like the zabbix agent running on the host directly, agent within a separate container - I decided to include the agent within this container as well. It proved difficult to separate the agent from the server on the same host, as the agent needs to know the hosts IP and that information changes as the containers restart. At the same time, the server needs to be linked to the client.
+
 ### Limitations
 
 There is no initialization of the zabbix database currently.
