@@ -2,7 +2,7 @@
 set -eu
 
 echo " -> Removing docker images"
-docker rm -f zabbix_server
+docker rm -vf zabbix_server
 
 echo " -> Rebuilding the image from current directory"
 docker build -t klevo/zabbix_server .
