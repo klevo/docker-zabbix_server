@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+# set -eu
 
 echo " -> Removing docker images"
 docker rm -vf zabbix_server

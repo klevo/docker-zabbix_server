@@ -1,5 +1,7 @@
 FROM dockerfile/ubuntu
 
+ENV ZABBIX_VERSION 2.4.3
+
 # install required packages
 RUN apt-get update && \
   
@@ -13,11 +15,11 @@ RUN apt-get update && \
   nullmailer
 
 # download zabbix source & compile it
-RUN wget -O zabbix-2.4.2.tar.gz http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/2.4.2/zabbix-2.4.2.tar.gz/download && \
+RUN wget -O zabbix.tar.gz http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/$ZABBIX_VERSION/zabbix-$ZABBIX_VERSION.tar.gz/download && \
     
   # compilation
-  tar -zxvf zabbix-2.4.2.tar.gz && \
-  cd zabbix-2.4.2 && \
+  tar -zxvf zabbix.tar.gz && \
+  cd zabbix && \
   ./configure --prefix=/opt/zabbix --enable-server --enable-agent --with-mysql --enable-ipv6 --with-libcurl --with-libxml2 && \
   make install
   
