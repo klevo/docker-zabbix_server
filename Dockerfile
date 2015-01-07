@@ -19,7 +19,7 @@ RUN wget -O zabbix.tar.gz http://sourceforge.net/projects/zabbix/files/ZABBIX%20
     
   # compilation
   tar -zxvf zabbix.tar.gz && \
-  cd zabbix && \
+  cd zabbix-$ZABBIX_VERSION && \
   ./configure --prefix=/opt/zabbix --enable-server --enable-agent --with-mysql --enable-ipv6 --with-libcurl --with-libxml2 && \
   make install
   
