@@ -34,7 +34,7 @@ RUN groupadd zabbix && \
   chown -R zabbix:zabbix /opt/zabbix/agent_include && \
     
   # deploy the frontend files
-  mv /root/zabbix-2.4.2/frontends/php /srv/zabbix && \
+  mv /root/zabbix-$ZABBIX_VERSION/frontends/php /srv/zabbix && \
   chown -R www-data:www-data /srv/zabbix
   
 # Zabbix server config
