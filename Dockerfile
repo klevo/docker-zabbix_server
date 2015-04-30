@@ -4,9 +4,10 @@ ENV ZABBIX_VERSION 2.4.5
 
 # install required packages
 RUN apt-get update && \
+  apt-get upgrade -y && \
   
   # zabbix dependencies
-  apt-get install -y build-essential adduser fping libc6 libcurl3-gnutls libiksemel3 libldap-2.4-2 libmysqlclient18 libmysqlclient-dev libodbc1 libopenipmi0 libsnmp30 libssh2-1 libxml2 lsb-base sysv-rc ucf libcurl3-dev libxml2-dev \
+  apt-get install -y build-essential adduser fping libc6 libcurl3-gnutls libiksemel3 libldap-2.4-2 libmysqlclient18 libmysqlclient-dev libodbc1 libopenipmi0 libsnmp30 libssh2-1 libxml2 lsb-base sysv-rc ucf libcurl3-dev libxml2-dev wget \
     
   # php-fpm & nginx
   php5-mysql php5-fpm php5-gd nginx \
