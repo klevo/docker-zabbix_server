@@ -1,6 +1,6 @@
-FROM dockerfile/ubuntu
+FROM ubuntu:14.04
 
-ENV ZABBIX_VERSION 2.4.3
+ENV ZABBIX_VERSION 2.4.5
 
 # install required packages
 RUN apt-get update && \
